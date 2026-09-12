@@ -60,7 +60,7 @@ bool GalaxyStoreCore::is_owned(const nx::string_view dlc_id) const {
   return false;
 }
 
-void GalaxyStoreCore::refresh_ownership() {
+void GalaxyStoreCore::refresh_ownership(const nx::string_view) {
   if (!m_platform.ready())
     return;
   const nx::android::JniScope env(m_platform.vm());

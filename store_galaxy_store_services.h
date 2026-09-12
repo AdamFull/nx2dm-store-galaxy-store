@@ -41,7 +41,9 @@ public:
 
   /// Fires `NxSamsungIap.obtainOwnedProducts()`, refreshing owned_dlc_ids()
   /// with every product id the signed-in Samsung account currently owns.
-  void refresh_ownership();
+  /// @p dlc_id is ignored, same as store::StoreCore::refresh_ownership()
+  /// documents for any bulk-capable backend.
+  void refresh_ownership(nx::string_view dlc_id = {}) override;
 
   static void dispatch_owned_products_queried(jboolean success,
                                               jobjectArray product_ids);
@@ -72,7 +74,7 @@ public:
   /// Fires `NxSamsungIap.obtainProductDetails()` for exactly the ids given -
   /// like the other two mobile backends, Samsung IAP has no "list
   /// everything" query, the game must know its own product ids up front.
-  void refresh_products(const nx::vector<nx::string> &product_ids);
+  void refresh_products(const nx::vector<nx::string> &product_ids) override;
 
   static void dispatch_product_details_response(jboolean success,
                                                  jobjectArray product_ids,
