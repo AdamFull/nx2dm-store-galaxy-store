@@ -1,0 +1,5 @@
+# The Samsung IAP SDK: a Samsung-account-gated developer download, no
+# fetchable URL - it can never be committed. Developer-provided locally as
+# an .aar under this directory; see android/app/build.gradle.kts's
+# store_galaxy_store fileTree dependency.
+/third_party/

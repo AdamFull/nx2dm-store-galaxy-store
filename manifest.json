@@ -1,0 +1,11 @@
+{
+  "name": "store_galaxy_store",
+  "displayName": "Samsung Galaxy Store",
+  "version": "0.1.0",
+  "author": "AdamFull",
+  "description": "Samsung Galaxy Store (Samsung IAP) storefront backend.",
+  "license": null,
+  "created": "2026-09-12",
+  "repository": null,
+  "revision": null
+}
