@@ -5,6 +5,10 @@
 
 #include <jni.h>
 
+namespace nx {
+class thread_pool;
+}
+
 namespace nxm::store_galaxy_store {
 
 /// Looks up `com.nx2d.runtime.NxSamsungIap` - shared by the platform and
@@ -47,6 +51,9 @@ public:
   [[nodiscard]] bool ready() const noexcept { return m_ready; }
 
   [[nodiscard]] JavaVM *vm() const noexcept { return m_vm; }
+  /// The pool whose main thread runs the Java calls made from its jobs.
+  void set_threads(nx::thread_pool *threads) noexcept { m_threads = threads; }
+  [[nodiscard]] nx::thread_pool *threads() const noexcept { return m_threads; }
   /// A global ref on the Android `Activity` SDL created this process with -
   /// `IapHelper.getInstance()` only needs the application `Context` half of
   /// it, but holding the `Activity` costs nothing extra and matches the
@@ -62,6 +69,7 @@ private:
   void on_connected();
 
   JavaVM *m_vm = nullptr;
+  nx::thread_pool *m_threads = nullptr;
   jobject m_activity = nullptr;
   bool m_ready = false;
 

@@ -8,6 +8,7 @@
 #include "app/module_system/module_context.h"
 
 #include "core/foundation/diagnostics/log.h"
+#include "core/foundation/threading/thread_pool.h"
 
 namespace nxm::store_galaxy_store {
 namespace {
@@ -46,7 +47,8 @@ public:
            registrar.provide(store::kIapService, PROVIDED_SERVICES[1].version, iap);
   }
 
-  bool on_attach(nxe::ModuleContext &) override {
+  bool on_attach(nxe::ModuleContext &ctx) override {
+    m_platform.set_threads(&ctx.threads());
     // No pump system registered here, unlike the desktop backends - every
     // Samsung IAP call resolves through the Java shim's own callbacks,
     // dispatched by the Android runtime itself (see
@@ -55,7 +57,9 @@ public:
     // takes no developer-supplied credentials at runtime at all - it
     // resolves everything from the process's own package identity and the
     // signed-in Samsung account, matching store_google_play's own shape.
-    if (m_platform.initialize())
+    bool connected = false;
+    ctx.threads().run_on_main([&] { connected = m_platform.initialize(); });
+    if (connected)
       nx::logi(log_store_galaxy_store, "attached, connecting to Samsung IAP");
     else
       nx::logi(log_store_galaxy_store, "no Android activity available; staying idle");
